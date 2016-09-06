@@ -1,14 +1,9 @@
 <?php 
 
-require_once 'config.php';
+require_once 'config/db';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    exit();
-}
+$sql = "SELECT * FROM layout";
 
-$sql = "SELECT id, name, lastName FROM person";
-$op = $conn->query($sql);
 
 $result = array();
 while($row = $op->fetch_assoc()) {
@@ -51,19 +46,7 @@ $conn->close();
                 }
                 echo "</tr>";
             }
-            
-        
         ?>
         </table>
     </body>
-    <script>
-        function getRandID(min, max) {
-            return Math.floor(Math.random() * (max - min) + min);
-        }
-        
-        var selectedId = getRandID(1, 144);
-        
-        $("#" + selectedId).css("background-color", "#DDD");
-        
-    </script>
 </html>

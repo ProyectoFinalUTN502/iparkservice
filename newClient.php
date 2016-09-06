@@ -9,7 +9,7 @@
  * Observaciones    :     
  */
 
-require_once 'db.php';
+require_once 'config/db.php';
 
 $type = INPUT_GET;
 

@@ -8,7 +8,8 @@
  * Fecha            : Septiembre 2016                                                          
  * Observaciones    : La Base de Datos es My Sql    
  */
-require_once 'config.php';
+require_once(dirname(__FILE__)."/config.php");
+
 
 function connect() {
 
