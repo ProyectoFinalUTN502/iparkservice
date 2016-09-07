@@ -31,11 +31,24 @@ function connect() {
     return $result;
 }
 
-function executeNonQuery($sql) {
+/**
+ * Realiza la ejecucion de una Consulta <b>No Query</b>
+ * @param string $sql Cadena con la instruccion SQL a ejecutar
+ * @param boolean $returnLastID Si esta false, la funcion devuelve el ultimo ID 
+ * insertado
+ * @return mix Si returnLasID esta activo, retorna false o el ultimo id insertado,
+ * si no, retorna un boolean con el estado de la operacion
+ */
+function executeNonQuery($sql, $returnLastID = false) {
     $result = false;
     $conn = connect();
     if($conn != null) {
         $result = $conn->query($sql);
+        
+        if ($returnLastID) {
+            $result = $conn->insert_id;
+        }
+        
         close($conn);
     }
     

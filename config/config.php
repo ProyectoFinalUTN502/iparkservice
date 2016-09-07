@@ -28,3 +28,7 @@ define("LAYOUT_UNAVAILABLE", "NO DISPONIBLE");
 // VALIDEZ DE LA POSICION
 define("VALID_POSITION", 1);
 define("INVALID_POSITION", 0);
+
+
+define("ACTIVE", 1);
+define("NOT_ACTIVE", 0);

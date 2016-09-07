@@ -11,9 +11,8 @@
 
 require_once 'config/db.php';
 
-$type = INPUT_GET;
+$type = INPUT_POST;
 
-$token      = filter_input($type, "token");
 $macAddress = filter_input($type, "macAddress");
 $email      = filter_input($type, "email");
 $password   = filter_input($type, "password");
@@ -22,19 +21,19 @@ $lastName   = filter_input($type, "lastName");
 
 $hashedPass = md5($password);
 
-$sql = "INSERT INTO client (token, macAddress, email, password, name, lastName) "
-        . "VALUES ('" . $token . "', '" . $macAddress . "', '" . $email . "', '" . $hashedPass . "', '" . $name . "', '" . $lastName . "')";
+$sql = "INSERT INTO client (macAddress, email, password, name, lastName, isActive) "
+        . "VALUES ('" . $macAddress . "', '" . $email . "', '" . $hashedPass . "', '" . $name . "', '" . $lastName . "', " . NOT_ACTIVE . ")";
 
-$op = executeNonQuery($sql);
+$op = executeNonQuery($sql , true);
 
 $result = array();
 
-if ($op) {
-    $result["state"] = "true";
-    $result["message"] = RESULT_OK;
+if ($op == false) {
+    $result["error"] = "true";
+    $result["data"] = "";
 } else {
-    $result["state"] = "false";
-    $result["message"] = RESULT_ERROR;    
+    $result["error"] = "false";
+    $result["data"] = $op; // El ultimo ID Insertado
 }
 
 echo json_encode($result);
