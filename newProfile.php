@@ -19,7 +19,7 @@ $is24       = filter_input($type, "is24");
 $isCovered  = filter_input($type, "isCovered");
 $clientID   = filter_input($type, "client_id");
 
-$sql = "INSERT INTO client_profile (range, maxPrice, is24, isCovered, client_id) "
+$sql = "INSERT INTO client_profile (`range`, maxPrice, is24, isCovered, client_id) "
         . "VALUES ('" . $range . "', '" . $maxPrice . "', '" . $is24 . "', '" . $isCovered . "', '" . $clientID . "');";
 
 $op = executeNonQuery($sql);

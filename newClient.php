@@ -13,16 +13,14 @@ require_once 'config/db.php';
 
 $type = INPUT_POST;
 
-$macAddress = filter_input($type, "macAddress");
 $email      = filter_input($type, "email");
-$password   = filter_input($type, "password");
+$password   = filter_input($type, "password"); // Ya viene Hasheado
 $name       = filter_input($type, "name");
 $lastName   = filter_input($type, "lastName");
-
-$hashedPass = md5($password);
+$macAddress = filter_input($type, "macAddress");
 
 $sql = "INSERT INTO client (macAddress, email, password, name, lastName, isActive) "
-        . "VALUES ('" . $macAddress . "', '" . $email . "', '" . $hashedPass . "', '" . $name . "', '" . $lastName . "', " . NOT_ACTIVE . ")";
+        . "VALUES ('" . $macAddress . "', '" . $email . "', '" . $password . "', '" . $name . "', '" . $lastName . "', " . NOT_ACTIVE . ")";
 
 $op = executeNonQuery($sql , true);
 

@@ -20,4 +20,9 @@ echo "<br><br>";
 // Login de Ejemplo
 $aut = "authenticate.php?email=cesar_cappetto@yahoo.com.ar&password=123456";
 echo "<a href='" . $aut . "'>Login</a>";
-echo "<br>";
+echo "<br><br>";
+
+// Carga de Perfil
+$np = "newProfile.php?range=3&maxPrice=50.0&is24=1&isCovered=1&client_id=1";
+echo "<a href='" . $np . "'>Nuevo Perfil</a>";
+echo "<br><br>";

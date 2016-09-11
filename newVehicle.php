@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Nombre           : newProfile.php                                                          
+ * Nombre           : newVehicle.php                                                          
  * Autor            : Gurpo 502
  * Descripcion      : Realiza el registro de un nuevo vehiculo                                                          
  *                  : de un Cliente en el sistema                                                        
@@ -13,14 +13,13 @@ require_once 'config/db.php';
 
 $type = INPUT_POST;
 
-$range      = filter_input($type, "range");
-$maxPrice   = filter_input($type, "maxPrice");
-$is24       = filter_input($type, "is24");
-$isCovered  = filter_input($type, "isCovered");
-$clientID   = filter_input($type, "client_id");
+$name           = filter_input($type, "name");
+$clientID       = filter_input($type, "client_id");
+$vehicleTypeID  = filter_input($type, "vehicle_type_id");
+$currentVehicle = ACTIVE;
 
-$sql = "INSERT INTO client_profile (range, maxPrice, is24, isCovered, client_id) "
-        . "VALUES ('" . $range . "', '" . $maxPrice . "', '" . $is24 . "', '" . $isCovered . "', '" . $clientID . "');";
+$sql = "INSERT INTO vehicle (name, currentVehicle, client_id, vehicle_type_id) "
+        . "VALUES ('" . $name . "', '" . $currentVehicle . "', '" . $clientID . "', '" . $vehicleTypeID . "');";
 
 $op = executeNonQuery($sql);
 
@@ -30,6 +29,10 @@ if ($op == false) {
     $result["error"] = "true";
     $result["data"] = "";
 } else {
+    
+    $sql = "UPDATE client SET isActive = " . ACTIVE . " WHERE id = " . $clientID;
+    $op = executeNonQuery($sql);
+    
     $result["error"] = "false";
     $result["data"] = ""; 
 }

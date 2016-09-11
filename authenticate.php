@@ -11,29 +11,27 @@
 
 require_once 'config/db.php';
 
-$type = INPUT_GET;
+$type = INPUT_POST;
 
 $email      = filter_input($type, "email");
 $password   = filter_input($type, "password");
 
-$hashedPass = md5($password);
-
-$sql = "SELECT * FROM client WHERE email = '" . $email . "' AND "
-        . "password = '" . $hashedPass . "' LIMIT 1";
+$sql = "SELECT * FROM client WHERE "
+        . "email = '" . $email . "' AND "
+        . "password = '" . $password . "' AND "
+        . "isActive = " . ACTIVE . " LIMIT 1";
 
 $op = executeQuery($sql);
 
 
 $result = array();
-while($row = $op->fetch_assoc()) {
-
-    $val                = array();
-    $val["token"]       = $row["token"];
-    $val["email"]       = $row["email"];
-    $val["name"]        = $row["name"];
-    $val["lastName"]    = $row["lastName"];
-    
-    array_push($result, $val);
+$row = $op->fetch_assoc();
+if ($row != NULL) {
+    $result["error"] = "false";
+    $result["data"] = "";
+} else {
+    $result["error"] = "true";
+    $result["data"] = "";
 }
 
 echo json_encode($result);
