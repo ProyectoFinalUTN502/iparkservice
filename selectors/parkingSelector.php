@@ -9,7 +9,7 @@
  * Observaciones    :     
  */
 
-require_once 'config/db.php';
+require_once './config/db.php';
 
 function getCriteria($clientID, $lat, $lng) {
     

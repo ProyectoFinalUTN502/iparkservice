@@ -29,6 +29,8 @@ define("LAYOUT_UNAVAILABLE", "NO DISPONIBLE");
 define("VALID_POSITION", 1);
 define("INVALID_POSITION", 0);
 
-
 define("ACTIVE", 1);
 define("NOT_ACTIVE", 0);
+
+// PATHFINDER
+define("NOT_AVAILABLE", 255);

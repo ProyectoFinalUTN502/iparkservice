@@ -1,0 +1,158 @@
+<?php
+
+/**
+ * Nombre           : layoutSelector.php                                                          
+ * Autor            : Gurpo 502
+ * Descripcion      : Realiza la seleccion de la posicion en la que el cliente                                                         
+ *                  : estacionara                                                         
+ * Fecha            : Septiembre 2016                                                         
+ * Observaciones    :     
+ */
+
+require_once '../config/db.php';
+
+/**
+ * Devuelve la primer posicion libre de un establecimiento para un determinado
+ * tipo de vehiculo
+ * @param int $parkinglotID El ID del Establecimiento elegido
+ * @param int $vehicleTypeID El ID del Tipo de Vehiculo conducido
+ * @return array La posicion encontrada en caso de exito<br>Array Vacio caso 
+ * contrario
+ */
+function getPosition($parkinglotID, $vehicleTypeID) {
+    
+    $result     = array();
+    $position   = array();
+    $found      = false;
+    
+    $sql    = "SELECT * FROM layout WHERE parkinglot_id = " . $parkinglotID;
+    $op     = executeQuery($sql);
+    
+    while($row = $op->fetch_assoc()){
+        
+        $layoutID = $row["id"];
+        $position = getFirstFreePosition($layoutID, $vehicleTypeID);
+        
+        if (!empty($position)) {
+            $found = true;
+            break;
+        }
+    }
+    
+    if ($found) {
+        // Reservo la posicion encontrada, para que otro no me la saque
+        bookePosition($position);
+        $result = $position;
+    }
+    
+    return $result;
+    
+}
+
+function getInputPosition($layoutID) {
+    $result = array();
+    
+    $sql = "SELECT id, xPoint, yPoint, layout_id FROM layout_position 
+            WHERE layout_id = " . $layoutID . " AND din = " . ACTIVE . " LIMIT 1";
+    
+    $op = executeQuery($sql);
+    
+    $row = $op->fetch_assoc();
+    if($row != NULL) {
+        $result["id"]           = $row["id"];
+        $result["xPoint"]       = $row["xPoint"];
+        $result["yPoint"]       = $row["yPoint"];
+        $result["layout_id"]    = $row["layout_id"];
+    }
+    
+    return $result;
+}
+
+function getOutputPosition($layoutID){
+    $result = array();
+    
+    $sql = "SELECT id, xPoint, yPoint, layout_id FROM layout_position 
+            WHERE layout_id = " . $layoutID . " AND dout = " . ACTIVE . " LIMIT 1";
+    
+    $op = executeQuery($sql);
+    
+    $row = $op->fetch_assoc();
+    if($row != NULL) {
+        $result["id"]           = $row["id"];
+        $result["xPoint"]       = $row["xPoint"];
+        $result["yPoint"]       = $row["yPoint"];
+        $result["layout_id"]    = $row["layout_id"];
+    }
+    
+    return $result;
+}
+
+function getFirstFreePosition($layoutID, $vehicleTypeID) {
+
+    $result = array();
+    
+    $sql = "SELECT 
+                id, xPoint, yPoint, layout_id, floor, maxRows, maxCols 
+            FROM 
+                vw_layout 
+            WHERE 
+                layout_id = " . $layoutID . " AND 
+                state = '" . LAYOUT_FREE . "' AND 
+                valid = " . VALID_POSITION . " AND 
+                vehicle_type_id  = " . $vehicleTypeID . " 
+            ORDER BY 
+                id ASC 
+            LIMIT 1";
+    
+    $op = executeQuery($sql);
+    
+    $row = $op->fetch_assoc();
+    if($row != NULL) {
+        $result = $row;
+//        $result["id"]           = $row["id"];
+//        $result["xPoint"]       = $row["xPoint"];
+//        $result["yPoint"]       = $row["yPoint"];
+//        $result["layout_id"]    = $row["layout_id"];
+    }
+    
+    return $result;
+}
+
+function getUnavailablePostitions($layoutID) {
+    $result = array();
+    
+    $sql = "SELECT 
+                id, xPoint, yPoint, layout_id, floor, maxRows, maxCols 
+            FROM 
+                vw_layout 
+            WHERE 
+                layout_id = " . $layoutID . " AND 
+                valid = " . INVALID_POSITION . " AND 
+                vehicle_type_id IS NULL ";
+    
+    $op = executeQuery($sql);
+    
+    while (($row = $op->fetch_assoc())) {
+        // Va la columna primero
+        $pos = array(
+            $row["yPoint"],
+            $row["xPoint"],
+            NOT_AVAILABLE
+        );
+        
+        array_push($result, $pos);
+    }
+    
+    
+    return $result;
+}
+
+function bookePosition($position) {
+    $sql = "UPDATE layout_position SET "
+            . "state = " . LAYOUT_BOOKED . " "
+            . "WHERE id = " . $position["id"];
+    
+    $result = executeNonQuery($sql);
+    return $result;
+}
+
