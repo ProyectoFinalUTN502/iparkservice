@@ -8,7 +8,7 @@
  * Fecha            : Septiembre 2016                                                          
  * Observaciones    : La Base de Datos es My Sql    
  */
-require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__) . "/config.php");
 
 
 function connect() {
@@ -16,12 +16,12 @@ function connect() {
     global $db_config;
     
     $conn = new mysqli(
-            $db_config["server"] . ": " . $db_config["port"], 
-            $db_config["user"], 
-            $db_config["password"], 
-            $db_config["schema"]
-            );
-    
+        $db_config["server"] . ":" . $db_config["port"], 
+        $db_config["user"], 
+        $db_config["password"], 
+        $db_config["schema"]
+        );
+
     if ($conn->connect_error) {
         $result = null;
     } else {

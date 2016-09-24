@@ -109,10 +109,6 @@ function getFirstFreePosition($layoutID, $vehicleTypeID) {
     $row = $op->fetch_assoc();
     if($row != NULL) {
         $result = $row;
-//        $result["id"]           = $row["id"];
-//        $result["xPoint"]       = $row["xPoint"];
-//        $result["yPoint"]       = $row["yPoint"];
-//        $result["layout_id"]    = $row["layout_id"];
     }
     
     return $result;
@@ -147,9 +143,42 @@ function getUnavailablePostitions($layoutID) {
     return $result;
 }
 
+/**
+ * 
+ * @param type $layoutID
+ * @param type $x
+ * @param type $y
+ * @return array
+ */
+function getControlPosition($layoutID, $x, $y) {
+    $result = array();
+    
+    $sql = "SELECT 
+                lp.*, vt.name  
+            FROM layout_position lp 
+            LEFT JOIN vehicle_type vt ON lp.vehicle_type_id = vt.id
+            WHERE 
+                layout_id = " . $layoutID . " AND 
+                xPoint = " . $x . " AND 
+                yPoint = " . $y . " LIMIT 1" ;
+    
+    $op = executeQuery($sql);
+    
+    $result = $op->fetch_assoc();
+    return $result;
+}
+
+function changeStatePosition($id, $state) {
+    $sql = "UPDATE layout_position SET "
+            . "state = '" . $state . "' "
+            . "WHERE id = " . $id;
+    $result = executeNonQuery($sql);
+    return $result;
+}
+
 function bookePosition($position) {
     $sql = "UPDATE layout_position SET "
-            . "state = " . LAYOUT_BOOKED . " "
+            . "state = '" . LAYOUT_BOOKED . "' "
             . "WHERE id = " . $position["id"];
     
     $result = executeNonQuery($sql);
