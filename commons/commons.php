@@ -14,3 +14,18 @@ function getPositionNumber($x, $y, $maxX, $maxY) {
     return $return;
 }
 
+function checkPosition($id) {
+    $result = array();
+    
+    $sql = "SELECT * FROM layout_position WHERE id = " . $id . " LIMIT 1";
+    $op = executeQuery($sql);
+    $row = $op->fetch_assoc();
+    
+    if ($row != NULL) {
+        
+    }
+    
+    
+    return $result;
+}
+

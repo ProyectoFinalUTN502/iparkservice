@@ -56,7 +56,7 @@ function executeNonQuery($sql, $returnLastID = false) {
 }
 
 function executeQuery($sql) {
-    $result = array();
+    $result = NULL;
     $conn = connect();
     if($conn != null) {
         $result = $conn->query($sql);

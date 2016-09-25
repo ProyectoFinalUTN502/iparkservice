@@ -24,3 +24,17 @@ function getClientByMacAddress($macAddress) {
     
     return $result;
 }
+
+function getClientPosition($clientID) {
+    $result = false;
+    $sql    = "SELECT * FROM real_time_position 
+               WHERE client_id = " . $clientID . " ORDER BY id DESC LIMIT 1";
+    $op     = executeQuery($sql);
+    
+    $row = $op->fetch_assoc();
+    if ($row != NULL) {
+        $result = $row;
+    }
+    
+    return $result;
+}

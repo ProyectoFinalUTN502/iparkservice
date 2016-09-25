@@ -114,29 +114,48 @@ function getFirstFreePosition($layoutID, $vehicleTypeID) {
     return $result;
 }
 
-function getUnavailablePostitions($layoutID) {
+function getUnavailablePostitions($layoutID, $x, $y) {
     $result = array();
     
     $sql = "SELECT 
-                id, xPoint, yPoint, layout_id, floor, maxRows, maxCols 
+                xPoint,
+                yPoint
             FROM 
-                vw_layout 
+                layout_position lp1 
             WHERE 
                 layout_id = " . $layoutID . " AND 
-                valid = " . INVALID_POSITION . " AND 
-                vehicle_type_id IS NULL ";
+                lp1.id NOT IN
+                (   
+                    SELECT 
+                        lp2.id 
+                    FROM 
+                        layout_position lp2 
+                    WHERE 
+                        layout_id = " . $layoutID . " AND
+                        valid = " . VALID_POSITION . " AND 
+                        din = " . INVALID_POSITION . " AND 
+                        dout = " . INVALID_POSITION . " AND 
+                        rin = " . INVALID_POSITION . " AND 
+                        rout = " . INVALID_POSITION . " AND 
+                        vehicle_type_id IS NULL
+                )";
     
     $op = executeQuery($sql);
     
     while (($row = $op->fetch_assoc())) {
-        // Va la columna primero
-        $pos = array(
-            $row["yPoint"],
-            $row["xPoint"],
-            NOT_AVAILABLE
-        );
-        
-        array_push($result, $pos);
+        $exp = ($row["xPoint"] == $x && $row["yPoint"] == $y);
+        if ($exp) {
+            continue;
+        } else {
+            // Va la columna primero
+            $pos = array(
+                $row["yPoint"],
+                $row["xPoint"],
+                NOT_AVAILABLE
+            );
+
+            array_push($result, $pos);
+        }
     }
     
     
@@ -173,6 +192,19 @@ function changeStatePosition($id, $state) {
             . "state = '" . $state . "' "
             . "WHERE id = " . $id;
     $result = executeNonQuery($sql);
+    return $result;
+}
+
+function getLayoutPosition($id) {
+    $result = false;
+    $sql = "SELECT * FROM layout_position WHERE id = " . $id . " LIMIT 1";
+    $op = executeQuery($sql);
+    $row = $op->fetch_assoc();
+    
+    if ($row != NULL) {
+        $result = $row;
+    }
+    
     return $result;
 }
 

@@ -6,8 +6,9 @@ require_once '../commons/commons.php';
 $type           = INPUT_GET;
 $parkinglotID   = filter_input($type, "pk_id");
 $vehicleTypeID  = filter_input($type, "vt_id");
+$clientID       = filter_input($type, "cl_id");
 
-$exp = $parkinglotID == NULL || $vehicleTypeID == NULL;
+$exp = $parkinglotID == NULL || $vehicleTypeID == NULL || $clientID == NULL;
 if ($exp) {
     echo "<h1>Ha ocurrido un error</h1>";
     echo "<h4>La informacion proporcionada no es valida</h4>";
@@ -15,14 +16,6 @@ if ($exp) {
 }
 
 $position = getPosition($parkinglotID, $vehicleTypeID);
-
-$param          = array();
-$param["rows"]  = 0;
-$param["cols"]  = 0;
-$param["start"] = 0;
-$param["end"]   = 0;
-$param["graph"] = array();
-
 if (!empty($position)) {
     
     // Encontro posicion, Busco la posicion de la entrada
@@ -30,15 +23,21 @@ if (!empty($position)) {
     $inputPos = getInputPosition($layoutID);
     
     // Con la posicion de entrada y la posicion del lugar, armo el camino
-    $param["lyRows"]  = $position["maxRows"];
-    $param["lyCols"]  = $position["maxCols"];
+    $param                  = array();
+    $param["clientID"]      = $clientID;
+    $param["lyRows"]        = $position["maxRows"];
+    $param["lyCols"]        = $position["maxCols"];
+    $param["idPosition"]    = $position["id"];
     
     // El start y el end van de 0 a max - 1 
     $param["start"] = getPositionNumber($inputPos["xPoint"], $inputPos["yPoint"], $position["maxRows"], $position["maxCols"]);
     $param["end"]   = getPositionNumber($position["xPoint"], $position["yPoint"], $position["maxRows"], $position["maxCols"]);
-    $param["lyGraph"] = getUnavailablePostitions($layoutID);
+    $param["lyGraph"] = getUnavailablePostitions($layoutID, $position["xPoint"], $position["yPoint"]);
+    
+    // Dibujo el Mapa
+    extract($param);
+    include 'map.php';
+} else {
+    include 'emptyMap.php';
 }
 
-// Dibujo el Mapa
-extract($param);
-include 'map.php';

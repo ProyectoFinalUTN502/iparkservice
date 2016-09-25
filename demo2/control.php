@@ -60,6 +60,12 @@ $maxCols    = $row["maxCols"];
                         $text = "";
                     }
                     
+                    // Posiciones Ocupadas por otro Auto
+                    if ($pos["state"] == LAYOUT_UNAVAILABLE) {
+                        $style = "style='background-color:#000000;'";
+                        $text = "";
+                    }
+                    
                     echo "<td data-id='" . $pos["id"] . "' " . $style ." align='center'>" . $text . "</td>";
                 }
                 echo "</tr>";
@@ -74,11 +80,6 @@ $maxCols    = $row["maxCols"];
         var id = $( this ).data("id");
         var color = hexc($( this ).css("background-color"));
         
-        // Posicion Invalida
-        if (color === "#909090") {
-            return;
-        }
-        
         // Posicion Libre
         if (color === "#8cff66") {
             $(this).css("background-color", "#ff4d4d");  
@@ -91,7 +92,11 @@ $maxCols    = $row["maxCols"];
             toogleLp(id, <?php echo "'" . LAYOUT_FREE . "'"; ?>);
         }
         
-        
+        // Posicion Ocupada
+        if (color === "#000000") {
+            $(this).css("background-color", "#8cff66"); 
+            toogleLp(id, <?php echo "'" . LAYOUT_FREE . "'"; ?>);
+        }
          
    });   
    

@@ -19,6 +19,8 @@ $db_config["schema"]    = "central_dev";
 // RESULTADOS OBTENIDOS
 define("RESULT_OK", "OK");
 define("RESULT_ERROR", "ERROR");
+define("RESULT_RECALCULATE", "Recalculate");
+define("RESULT_PARK", "Park");
 
 // ESTADOS DE LAYOUT
 define("LAYOUT_FREE", "LIBRE");

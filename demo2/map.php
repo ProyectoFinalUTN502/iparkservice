@@ -1,6 +1,6 @@
 <html>
     <head>
-        <!--<meta charset='UTF-8' content='1' http-equiv='REFRESH'></meta>-->
+        <script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
         <style type="text/css">
             * {
                 margin: 0px; padding: 0px;
@@ -21,7 +21,7 @@
             .Path		{ background-color: #9F9; }
             .Open		{ background-color: #252; }
             .Close		{ background-color: #4A4; }
-            .Wall		{ background-color: #F99; }
+            .Wall		{ background-color: #909090; }
 
         </style>
         <title>iParking</title>
@@ -84,3 +84,46 @@
 
     </body>
 </html>
+<script>
+    var tid = setInterval(controlProcess, 1000);
+    function abortTimer() { 
+      clearInterval(tid);
+    }
+    
+    function controlProcess() {
+        abortTimer();
+        checkPosition();
+    }
+    
+    function checkPosition() {
+        var parametros = {
+            "id": <?php echo $idPosition; ?>, 
+            "client_id" : <?php echo $clientID; ?>
+        };
+
+        $.ajax({
+            data: parametros,
+            url: "check_position.php",
+            type: 'POST',
+            success: function (response) {
+                tid = setInterval(controlProcess, 1000);
+                if (response === '<?php echo RESULT_RECALCULATE; ?>') {
+                    alert("Hay que recalcular");
+                    abortTimer();
+                    location.reload();
+                }
+                
+                if (response === '<?php echo RESULT_PARK; ?>') {
+                    alert("Ha llegado a su Estacionamiento");
+                    abortTimer();
+                }
+                
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                console.log(err.Message);
+                tid = setInterval(controlProcess, 1000);
+            }
+        });
+    }
+</script>
