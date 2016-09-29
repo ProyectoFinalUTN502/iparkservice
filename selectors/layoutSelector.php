@@ -114,6 +114,53 @@ function getFirstFreePosition($layoutID, $vehicleTypeID) {
     return $result;
 }
 
+function getLayouGraph($layoutID, $x, $y) {
+    $result = array();
+    $avilable       = getAvailablePositions($layoutID);
+    $unAvailable    = getUnavailablePostitions($layoutID, $x, $y);
+    
+    foreach($avilable as $a) {
+        array_push($result, $a);
+    }
+    
+    foreach($unAvailable as $u) {
+        array_push($result, $u);
+    }
+    
+    return $result;
+    
+}
+
+function getAvailablePositions($layoutID) {
+    $result = array();
+    
+    $sql = "SELECT 
+                id, xPoint, yPoint, circulationValue
+            FROM 
+                layout_position 
+            WHERE 
+                layout_id = " . $layoutID . " AND
+                valid = " . VALID_POSITION . " AND 
+                din = " . INVALID_POSITION . " AND 
+                dout = " . INVALID_POSITION . " AND 
+                rin = " . INVALID_POSITION . " AND 
+                rout = " . INVALID_POSITION . " AND 
+                vehicle_type_id IS NULL";
+    
+    $op = executeQuery($sql);
+    
+    while (($row = $op->fetch_assoc())) {
+        $pos = array(
+            $row["yPoint"],
+            $row["xPoint"],
+            $row["circulationValue"]
+        );
+        array_push($result, $pos);
+    }
+    
+    return $result;
+}
+
 function getUnavailablePostitions($layoutID, $x, $y) {
     $result = array();
     
@@ -151,7 +198,7 @@ function getUnavailablePostitions($layoutID, $x, $y) {
             $pos = array(
                 $row["yPoint"],
                 $row["xPoint"],
-                NOT_AVAILABLE
+                PATH_WALL
             );
 
             array_push($result, $pos);

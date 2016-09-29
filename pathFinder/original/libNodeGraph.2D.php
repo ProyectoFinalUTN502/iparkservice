@@ -20,8 +20,14 @@ class NodeGraph2D implements NodeGraph {
     public $SX;
     public $SY;
     public $Directions = Array(
-        Array(0, -1), Array(1, 0), Array(0, 1), Array(-1, 0),
-        Array(1, -1), Array(1, 1), Array(-1, 1), Array(-1, -1)
+        Array(0, -1), 
+        Array(1, 0), 
+        Array(0, 1), 
+        Array(-1, 0)
+//        Array(1, -1), 
+//        Array(1, 1), 
+//        Array(-1, 1), 
+//        Array(-1, -1)
     );
     public $Movement_Horizontally = 1.0;
     public $Movement_Diagonally = M_SQRT2;
@@ -75,7 +81,7 @@ class NodeGraph2D implements NodeGraph {
         list($X, $Y) = $this->Node2XY($Node);
 
         $Neighbours = Array();
-        for ($i = 0; $i < 8; ++$i) {
+        for ($i = 0; $i < 4; ++$i) {
             $NX = $X + $this->Directions[$i][0];
             $NY = $Y + $this->Directions[$i][1];
 
@@ -89,23 +95,38 @@ class NodeGraph2D implements NodeGraph {
 
             $Neighbours[] = ($NY * $this->SX) + $NX;
         }
+//        for ($i = 0; $i < 8; ++$i) {
+//            $NX = $X + $this->Directions[$i][0];
+//            $NY = $Y + $this->Directions[$i][1];
+//
+//            if ($NX < 0 || $NY < 0 || $NX >= $this->SX || $NY >= $this->SY) {
+//                continue;
+//            }
+//
+//            if ($this->Tiles[$NX][$NY] == 255) {
+//                continue;
+//            }
+//
+//            $Neighbours[] = ($NY * $this->SX) + $NX;
+//        }
 
         return $Neighbours;
     }
 
     function G($NodeFrom, $NodeTo) {
+        return $this->Movement_Horizontally;
         // Assumes we are being given a neighbour, as expected.
-        list($FX, $FY) = $this->Node2XY($NodeFrom);
-        list($TX, $TY) = $this->Node2XY($NodeTo);
-        $G = $this->Tiles[$TX][$TY];
-        if ($FX == $TX || $FY == $TY) {
-            $G += $this->Movement_Horizontally;
-        } else {
-            $G += $this->Movement_Diagonally;
-        }
-
-
-        return $G;
+//        list($FX, $FY) = $this->Node2XY($NodeFrom);
+//        list($TX, $TY) = $this->Node2XY($NodeTo);
+//        $G = $this->Tiles[$TX][$TY];
+//        if ($FX == $TX || $FY == $TY) {
+//            $G += $this->Movement_Horizontally;
+//        } else {
+//            $G += $this->Movement_Diagonally;
+//        }
+//
+//
+//        return $G;
     }
 
     function H($NodeFrom, $NodeTo) {

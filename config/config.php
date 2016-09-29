@@ -35,4 +35,4 @@ define("ACTIVE", 1);
 define("NOT_ACTIVE", 0);
 
 // PATHFINDER
-define("NOT_AVAILABLE", 255);
+define("PATH_WALL", - 255);

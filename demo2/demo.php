@@ -32,7 +32,7 @@ if (!empty($position)) {
     // El start y el end van de 0 a max - 1 
     $param["start"] = getPositionNumber($inputPos["xPoint"], $inputPos["yPoint"], $position["maxRows"], $position["maxCols"]);
     $param["end"]   = getPositionNumber($position["xPoint"], $position["yPoint"], $position["maxRows"], $position["maxCols"]);
-    $param["lyGraph"] = getUnavailablePostitions($layoutID, $position["xPoint"], $position["yPoint"]);
+    $param["lyGraph"] = getLayouGraph($layoutID, $position["xPoint"], $position["yPoint"]);
     
     // Dibujo el Mapa
     extract($param);

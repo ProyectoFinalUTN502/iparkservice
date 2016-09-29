@@ -29,14 +29,14 @@
 
     <body>
         <?php
-        include '../pathFinder/libPathfinding.php';
-        include '../pathFinder/libNodeGraph.2D.php';
+        include '../pathFinder/PathFinder.php';
+        include '../pathFinder/NodeGraph2D.php';
 
         // Columnas - Filas
         $NodeGraph = new NodeGraph2D($lyCols, $lyRows);
         $NodeGraph->set($lyGraph);
         
-        $PathFinder = new PathFinding($NodeGraph);
+        $PathFinder = new PathFinder($NodeGraph);
         $Path = $PathFinder->Find($start, $end);
 
         $Table = Array();
@@ -60,7 +60,7 @@
                     if (isset($Rendered[$X][$Y])) {
                         $Table[$Y][$X] = $Rendered[$X][$Y];
                     } else {
-                        $Table[$Y][$X] = $Value == 255 ? 'Wall' : 'Floor';
+                        $Table[$Y][$X] = $Value == PATH_WALL ? 'Wall' : 'Floor';
                     }
                 }
             }
