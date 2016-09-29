@@ -122,7 +122,7 @@ $maxCols    = $row["maxCols"];
             type: 'POST',
             beforeSend: function () { },
             success: function () {
-                location.reload();
+                //location.reload();
             },
             error: function (xhr, status, error) {
                 var err = eval("(" + xhr.responseText + ")");
