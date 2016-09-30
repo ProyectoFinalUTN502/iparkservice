@@ -55,11 +55,8 @@ class PathFinder {
             foreach ($Neighbours as $Neighbour) {
                 $G = $this->Cache[$Node]['G'] + $this->Graph->G($Node, $Neighbour);
 
-                if (isset($this->Cache[$Neighbour]) &&
-                        $this->Cache[$Neighbour]['Status'] &&
-                        $this->Cache[$Neighbour]['G'] <= $G) {
-                    continue;
-                }
+                $exp = isset($this->Cache[$Neighbour]) && $this->Cache[$Neighbour]['Status'] && $this->Cache[$Neighbour]['G'] <= $G;
+                if ($exp) { continue; }
 
                 $F = $G + $this->Graph->H($Neighbour, $NodeEnd);
 

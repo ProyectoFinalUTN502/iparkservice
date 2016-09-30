@@ -153,7 +153,7 @@ function getAvailablePositions($layoutID) {
         $pos = array(
             $row["yPoint"],
             $row["xPoint"],
-            $row["circulationValue"]
+            ($row["circulationValue"] * 10)
         );
         array_push($result, $pos);
     }

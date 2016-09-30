@@ -104,7 +104,7 @@
             success: function (response) {
                 tid = setInterval(controlProcess, 1000);
                 if (response === '<?php echo RESULT_RECALCULATE; ?>') {
-                    alert("Hay que recalcular");
+                    alert("La posicion se ha ocupado: Debe recalcular");
                     abortTimer();
                     location.reload();
                 }
