@@ -9,59 +9,30 @@
  * Observaciones    :     
  */
 
-require_once './config/db.php';
-
-function getCriteria($clientID, $lat, $lng) {
+function getParkinglotsByParam($vehicleTypeID, $lat, $lng, $range, $price, $is24, $isCovered) {
+    $result = array();
     
-    $result = "";
-    $sql    = "SELECT * FROM profile WHERE client_id = " . $clientID . " LIMIT 1";
+    $args   = $vehicleTypeID . ", " . $lat . ", " . $lng . ", " . $range . ", " . $price . ", " . $is24 . ", " . $isCovered;
+    $sql    = "call searchParkinglotBy(" . $args . ");";
     $op     = executeQuery($sql);
     
-    $row = $op->fetch_assoc();
-    if ($row != NULL) {
-        
-        /*
-         * SELECT *, (3959 * acos(cos(radians('".$lat."')) * cos(radians(lat)) * cos( radians(long) - radians('".$lng."')) + sin(radians('".$lat."')) * 
-sin(radians(lat)))) 
-AS distance 
-FROM carpark WHERE distance < 15 ORDER BY distance LIMIT 0 , 10
-         * 
-         * 
-         * 
-         */
-        
-        
+    while($row = $op->fetch_assoc()){
+        array_push($result, $row);
     }
     
     return $result;
 }
 
-function getParkinglots($criteria = "") {
+function getParkinglotsByProfile($clientID, $vehicleTypeID, $lat, $lng) {
     
-    $result     = false;
-    $position   = array();
-    $found      = false;
+    $result = array();
     
-    $sql    = "SELECT * FROM layout WHERE parkinglot_id = " . $parkinglotID;
+    $sql    = "CALL searchParkinglot(" . $clientID . ", " . $vehicleTypeID . ", " . $lat . ", " . $lng . ");";
     $op     = executeQuery($sql);
     
     while($row = $op->fetch_assoc()){
-        
-        $layoutID = $row["id"];
-        $position = getFirstFreePosition($layoutID, $vehicleTypeID);
-        
-        if (!empty($position)) {
-            $found = true;
-            break;
-        }
-    }
-    
-    if ($found) {
-        // Reservo la posicion encontrada, para que otro no me la saque
-        bookePosition($position);
-        $result = $position;
+        array_push($result, $row);
     }
     
     return $result;
-    
 }
