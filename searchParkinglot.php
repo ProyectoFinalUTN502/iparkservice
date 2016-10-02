@@ -12,12 +12,19 @@
 require_once "config/db.php";
 require_once "selectors/parkingSelector.php";
 
-$type           = INPUT_POST;
+$type           = INPUT_GET;
 
 $clientID       = filter_input($type, "client_id");
 $vehicleTypeID  = filter_input($type, "vt_id");
 $lat            = filter_input($type, "lat");
 $lng            = filter_input($type, "lng");
+
+$exp = $clientID == NULL || $vehicleTypeID == NULL || $lat == NULL || $lng == NULL;
+if ($exp) {
+    $result = array();
+    echo json_encode($result);
+    exit();
+}
 
 $result = getParkinglotsByProfile($clientID, $vehicleTypeID, $lat, $lng);
 echo json_encode($result);

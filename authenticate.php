@@ -28,7 +28,7 @@ $result = array();
 $row = $op->fetch_assoc();
 if ($row != NULL) {
     $result["error"] = "false";
-    $result["data"] = "";
+    $result["data"] = $row["id"];
 } else {
     $result["error"] = "true";
     $result["data"] = "";
