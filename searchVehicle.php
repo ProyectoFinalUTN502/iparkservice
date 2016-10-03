@@ -6,7 +6,9 @@ $type       = INPUT_GET;
 $clientID   = filter_input(INPUT_GET, "client_id");
 
 if ($clientID == NULL) {
-    
+    $result = array();
+    echo json_encode($result);
+    exit();
 }
 
 $sql = "SELECT * FROM vehicle WHERE client_id = " . $clientID . " AND isActive = " . ACTIVE;
