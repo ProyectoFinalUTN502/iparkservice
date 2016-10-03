@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Nombre           : NodeGraph2D.php                                                          
+ * Autor            : Gurpo 502
+ * Descripcion      : Clase encargada de trabajar sobre Nodos en 2D                       
+ * Fecha            : Septiembre 2016                                                         
+ * Observaciones    :     
+ */
+
 require_once "iNodeGraph.php";
 
 class NodeGraph2D implements iNodeGraph {

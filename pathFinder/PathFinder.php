@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Nombre           : PathFinder.php                                                          
+ * Autor            : Gurpo 502
+ * Descripcion      : Clase encargada de realizar la implementacion del 
+ *                  : Metodo de Busqueda A*                       
+ * Fecha            : Septiembre 2016                                                         
+ * Observaciones    :     
+ */
+
 define('STATUS_UNTOUCHED', 0);
 define('STATUS_OPEN', 1);
 define('STATUS_CLOSED', 2);

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Nombre           : commons.php                                                          
+ * Autor            : Gurpo 502
+ * Descripcion      : Utilidades Comunes al Proyecto                    
+ * Fecha            : Septiembre 2016                                                         
+ * Observaciones    :     
+ */
+
 function getPositionNumber($x, $y, $maxX, $maxY) {
     $return = 0;
     $pos = 0;

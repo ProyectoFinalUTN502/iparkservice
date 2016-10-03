@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Nombre           : searchVehicle.php                                                          
+ * Autor            : Grupo 502
+ * Descripcion      : Obtiene el listado de los vehiculos asociados a un                                                          
+ *                  : Cliente                                                         
+ * Fecha            : Septiembre 2016                                                         
+ * Observaciones    : 
+ */
+
 require_once "config/db.php";
 
 $type       = INPUT_GET;
@@ -11,7 +20,8 @@ if ($clientID == NULL) {
     exit();
 }
 
-$sql = "SELECT * FROM vehicle WHERE client_id = " . $clientID . " AND isActive = " . ACTIVE;
+$sql = "SELECT * FROM vehicle 
+        WHERE client_id = " . $clientID . " AND isActive = " . ACTIVE;
 $op = executeQuery($sql);
 
 $result = array();

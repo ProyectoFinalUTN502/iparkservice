@@ -3,8 +3,8 @@
 /**
  * Nombre           : layoutSelector.php                                                          
  * Autor            : Gurpo 502
- * Descripcion      : Realiza la seleccion de la posicion en la que el cliente                                                         
- *                  : estacionara                                                         
+ * Descripcion      : Funciones que facilitan la seleccion de una posicion
+ *                  : para estacionar                                                     
  * Fecha            : Septiembre 2016                                                         
  * Observaciones    :     
  */

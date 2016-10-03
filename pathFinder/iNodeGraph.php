@@ -1,11 +1,14 @@
 <?php
 
+/**
+ * Nombre           : iNodeGraph.php                                                          
+ * Autor            : Gurpo 502
+ * Descripcion      : Interfaz NodeGraph                       
+ * Fecha            : Septiembre 2016                                                         
+ * Observaciones    :     
+ */
+
 interface iNodeGraph {
-
-    // This is an interface of what is expected from a NodeGraph object.
-    // Comments help clarify why or for what the methods used in the Pathfinding lib.
-    // Note that $Node, $NodeFrom and $NodeTo should be an integer for array lookup purposes.
-
 
     public function Neighbours($Node);
 

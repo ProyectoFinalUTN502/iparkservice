@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Nombre           : searchClientProfile.php                                                          
+ * Autor            : Grupo 502
+ * Descripcion      : Obtiene el Perfil de Busqueda para un determinado  Cliente                                                         
+ * Fecha            : Octubre 2016                                                         
+ * Observaciones    : 
+ */
+
+
 require_once "config/db.php";
 
 $type       = INPUT_GET;

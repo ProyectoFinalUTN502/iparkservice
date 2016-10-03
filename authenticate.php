@@ -4,7 +4,6 @@
  * Nombre           : authenticate.php                                                          
  * Autor            : Gurpo 502
  * Descripcion      : Realiza la acreditacion de un cliente en el sistema                                                        
- *                  :                                                       
  * Fecha            : Septiembre 2016                                                         
  * Observaciones    :     
  */

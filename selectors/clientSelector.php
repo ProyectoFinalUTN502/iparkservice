@@ -3,8 +3,7 @@
 /**
  * Nombre           : clientSelector.php                                                          
  * Autor            : Gurpo 502
- * Descripcion      : Realiza la seleccion de un Cliente a traves de su Mac 
- *                  : Address
+ * Descripcion      : Funciones que facilitan la seleccion de un Cliente
  * Fecha            : Septiembre 2016                                                         
  * Observaciones    :     
  */

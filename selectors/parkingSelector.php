@@ -3,8 +3,7 @@
 /**
  * Nombre           : parkingSelector.php                                                          
  * Autor            : Gurpo 502
- * Descripcion      : Realiza la seleccion de los establecimientos que cumplen
- *                  : con las preferencias de busqueda de los clientes                          
+ * Descripcion      : Funciones que facilitan la seleccion de un Establecimiento                       
  * Fecha            : Septiembre 2016                                                         
  * Observaciones    :     
  */
