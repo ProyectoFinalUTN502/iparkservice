@@ -19,19 +19,22 @@ $name       = filter_input($type, "name");
 $lastName   = filter_input($type, "lastName");
 $macAddress = filter_input($type, "macAddress");
 
-$sql = "INSERT INTO client (macAddress, email, password, name, lastName, isActive) "
-        . "VALUES ('" . $macAddress . "', '" . $email . "', '" . $password . "', '" . $name . "', '" . $lastName . "', " . NOT_ACTIVE . ")";
-
+$sql = "INSERT INTO client (email, password, name, lastName, isActive) "
+        . "VALUES ('" . $email . "', '" . $password . "', '" . $name . "', '" . $lastName . "', " . NOT_ACTIVE . ")";
 $op = executeNonQuery($sql , true);
 
-$result = array();
-
-if ($op == false) {
-    $result["error"] = "true";
-    $result["data"] = "";
-} else {
+$result = array();  
+if ($op != false) {
+    // El ultimo ID Insertado
+    $clientID = $op;
+    $sql = "INSERT INTO client_mac (macAddress, client_id) VALUES ('" . $macAddress . "', '" . $clientID . "');";
+    $op = executeNonQuery($sql);
+    
     $result["error"] = "false";
-    $result["data"] = $op; // El ultimo ID Insertado
+    $result["data"] = $clientID; 
+} else {
+    $result["error"] = "true";
+    $result["data"] = ""; 
 }
 
 echo json_encode($result);
