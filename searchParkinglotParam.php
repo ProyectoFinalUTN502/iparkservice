@@ -12,7 +12,7 @@
 require_once "config/db.php";
 require_once "selectors/parkingSelector.php";
 
-$type           = INPUT_POST;
+$type           = INPUT_GET;
 
 $vehicleTypeID  = filter_input($type, "vt_id");
 $lat            = filter_input($type, "lat");
@@ -21,6 +21,13 @@ $range          = filter_input($type, "range");
 $price          = filter_input($type, "price");
 $is24           = filter_input($type, "is24");
 $isCovered      = filter_input($type, "isCovered");
+
+$exp = $vehicleTypeID == NULL || $lat == NULL || $lng == NULL;
+if ($exp) {
+    $result = array();
+    echo json_encode($result);
+    exit();
+}
 
 $result = getParkinglotsByParam($vehicleTypeID, $lat, $lng, $range, $price, $is24, $isCovered);
 echo json_encode($result);
