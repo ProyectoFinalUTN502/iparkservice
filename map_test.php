@@ -1,7 +1,7 @@
 <html>
     <head>
         <script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
-        <link href="css/style.css" rel="stylesheet">
+        <link href="css/style_test.css" rel="stylesheet">
         <title>iParking</title>
     </head>
 

@@ -36,3 +36,4 @@ define("NOT_ACTIVE", 0);
 
 // PATHFINDER
 define("PATH_WALL", - 255);
+define("PATH_INVALID", - 512);

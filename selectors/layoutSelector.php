@@ -9,8 +9,6 @@
  * Observaciones    :     
  */
 
-require_once '../config/db.php';
-
 /**
  * Devuelve la primer posicion libre de un establecimiento para un determinado
  * tipo de vehiculo
@@ -116,8 +114,15 @@ function getFirstFreePosition($layoutID, $vehicleTypeID) {
 
 function getLayouGraph($layoutID, $x, $y) {
     $result = array();
-    $avilable       = getAvailablePositions($layoutID);
-    $unAvailable    = getUnavailablePostitions($layoutID, $x, $y);
+    
+    // Todas las posiciones por donde se puede caminar
+    $avilable = getAvailablePositions($layoutID);
+    
+    // El resto de los espacios menos la posicion reservada
+    $unAvailable = getUnavailablePostitions($layoutID, $x, $y);
+    
+    // Las posiciones marcadas como invalidas en el Layout
+    $invalid = getInvalidPositions($layoutID);
     
     foreach($avilable as $a) {
         array_push($result, $a);
@@ -125,6 +130,10 @@ function getLayouGraph($layoutID, $x, $y) {
     
     foreach($unAvailable as $u) {
         array_push($result, $u);
+    }
+    
+    foreach ($invalid as $v) {
+        array_push($result, $v);
     }
     
     return $result;
@@ -168,24 +177,48 @@ function getUnavailablePostitions($layoutID, $x, $y) {
                 xPoint,
                 yPoint
             FROM 
-                layout_position lp1 
+                layout_position 
             WHERE 
                 layout_id = " . $layoutID . " AND 
-                lp1.id NOT IN
-                (   
-                    SELECT 
-                        lp2.id 
-                    FROM 
-                        layout_position lp2 
-                    WHERE 
-                        layout_id = " . $layoutID . " AND
-                        valid = " . VALID_POSITION . " AND 
-                        din = " . INVALID_POSITION . " AND 
-                        dout = " . INVALID_POSITION . " AND 
-                        rin = " . INVALID_POSITION . " AND 
-                        rout = " . INVALID_POSITION . " AND 
-                        vehicle_type_id IS NULL
+                vehicle_type_id IS NOT NULL
+            UNION
+            SELECT 
+                xPoint,
+                yPoint
+            FROM 
+                layout_position 
+            WHERE 
+                layout_id = " . $layoutID . " AND 
+                vehicle_type_id IS NULL AND
+                (
+                    din = " . VALID_POSITION . " OR 
+                    dout = " . VALID_POSITION . " OR 
+                    rin = " . VALID_POSITION . " OR 
+                    rout = " . VALID_POSITION . "
                 )";
+    
+//    $sql = "SELECT 
+//                xPoint,
+//                yPoint
+//            FROM 
+//                layout_position lp1 
+//            WHERE 
+//                layout_id = " . $layoutID . " AND 
+//                lp1.id NOT IN
+//                (   
+//                    SELECT 
+//                        lp2.id 
+//                    FROM 
+//                        layout_position lp2 
+//                    WHERE 
+//                        layout_id = " . $layoutID . " AND
+//                        valid = " . VALID_POSITION . " AND 
+//                        din = " . INVALID_POSITION . " AND 
+//                        dout = " . INVALID_POSITION . " AND 
+//                        rin = " . INVALID_POSITION . " AND 
+//                        rout = " . INVALID_POSITION . " AND 
+//                        vehicle_type_id IS NULL
+//                )";
     
     $op = executeQuery($sql);
     
@@ -209,6 +242,35 @@ function getUnavailablePostitions($layoutID, $x, $y) {
     return $result;
 }
 
+function getInvalidPositions($layoutID) {
+    $result = array();
+    
+    $sql = "SELECT 
+                xPoint,
+                yPoint
+            FROM 
+                layout_position 
+            WHERE 
+                layout_id = " . $layoutID . " AND 
+                valid = " . INVALID_POSITION . " AND 
+                din = " . INVALID_POSITION . " AND 
+                dout = " . INVALID_POSITION . " AND 
+                rin = " . INVALID_POSITION . " AND 
+                rout = " . INVALID_POSITION;
+    
+    $op = executeQuery($sql);
+    
+    while (($row = $op->fetch_assoc())) {
+        $pos = array(
+            $row["yPoint"],
+            $row["xPoint"],
+            PATH_INVALID
+        );
+        array_push($result, $pos);
+    }
+    
+    return $result;
+}
 /**
  * 
  * @param type $layoutID
