@@ -16,22 +16,34 @@ function getParkinglotsByParam($vehicleTypeID, $lat, $lng, $range, $price, $is24
     $op     = executeQuery($sql);
     
     while($row = $op->fetch_assoc()){
-        array_push($result, $row);
+        $encodedRow = utf8ize($row);
+        array_push($result, $encodedRow);
     }
     
     return $result;
 }
 
 function getParkinglotsByProfile($clientID, $vehicleTypeID, $lat, $lng) {
-    
     $result = array();
     
     $sql    = "CALL searchParkinglot(" . $clientID . ", " . $vehicleTypeID . ", " . $lat . ", " . $lng . ");";
     $op     = executeQuery($sql);
     
     while($row = $op->fetch_assoc()){
-        array_push($result, $row);
+        $encodedRow = utf8ize($row);
+        array_push($result, $encodedRow);
     }
     
     return $result;
+}
+
+function utf8ize($d) {
+    if (is_array($d)) {
+        foreach ($d as $k => $v) {
+            $d[$k] = utf8ize($v);
+        }
+    } else if (is_string ($d)) {
+        return utf8_encode($d);
+    }
+    return $d;
 }

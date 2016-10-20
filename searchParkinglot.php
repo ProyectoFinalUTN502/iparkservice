@@ -25,7 +25,6 @@ if ($exp) {
     echo json_encode($result);
     exit();
 }
-
 $result = getParkinglotsByProfile($clientID, $vehicleTypeID, $lat, $lng);
 echo json_encode($result);
 
