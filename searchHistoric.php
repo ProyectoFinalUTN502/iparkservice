@@ -10,9 +10,10 @@
  */
 
 require_once "config/db.php";
+require_once "commons/commons.php";
 
 $type       = INPUT_GET;
-$clientID   = filter_input(INPUT_GET, "client_id");
+$clientID   = filter_input(INPUT_GET, "cl_id");
 
 if ($clientID == NULL) {
     $result = array();
@@ -27,7 +28,8 @@ $op = executeQuery($sql);
 
 $result = array();
 while ($row = $op->fetch_assoc()) {
-    array_push($result, $row);
+    $encodedRow = utf8ize($row);
+    array_push($result, $encodedRow);
 }
 
 echo json_encode($result);

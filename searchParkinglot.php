@@ -10,6 +10,7 @@
  */
 
 require_once "config/db.php";
+require_once "commons/commons.php";
 require_once "selectors/parkingSelector.php";
 
 $type           = INPUT_GET;
