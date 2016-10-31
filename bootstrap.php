@@ -1,12 +1,16 @@
 <?php
 require_once "config/db.php";
 require_once "selectors/clientSelector.php";
+require_once "commons/commons.php";
 
 define("USER", "root");
 define("PASSWORD", "proyecto2016cesarputo");
 
 define("SERVER_IP", "192.168.1.135");
-define("BASE_IP", "192.168.1.");
+define("BASE_IP", "192.168.1.13");
+
+define("SERVER_PORT", "60005");
+define("BASE_PORT", "6000");
 
 define("PUTTY", "F:\Stefan\Descargas\putty.exe");
 define("SERVER_FILE", "comandos_servidor.bin");
@@ -70,10 +74,10 @@ fwrite($clientFile, $txt);
 fclose($clientFile);
 
 // Ejecuto el comando del Putty
-send2Server(PUTTY, USER, SERVER_IP, PASSWORD, SERVER_FILE);
+send2Server(PUTTY, USER, SERVER_IP, SERVER_PORT, PASSWORD, SERVER_FILE);
 sleep(1);
-for ($i = 135; $i < 139; $i++) {
-    send2Client(PUTTY, USER, BASE_IP . $i, PASSWORD, CLIENT_FILE);
+for ($i = 5; $i < 9; $i++) {
+    send2Client(PUTTY, USER, BASE_IP . $i, BASE_PORT . $i, PASSWORD, CLIENT_FILE);
     sleep(1);
 }
 
@@ -81,17 +85,3 @@ $result = array();
 $result["error"] = "false";
 $result["data"] = "";
 echo json_encode($result);
-
-
-//echo " Se ha iniciado el proceso de monitoreo para el cliente " . $clientID . " sobre la Mac " . $macAddress;
-
-
-function send2Server($putty, $serverUser, $serverIp, $serverPassword, $serverFile) {
-    $command = "start " . $putty . " " . $serverUser . "@" . $serverIp . " -pw " . $serverPassword . " -m " . $serverFile;
-    pclose(popen($command, "w"));
-}
-
-function send2Client($putty, $clientUser, $clientIp, $clientPassword, $clientFile) {
-    $command = "start " . $putty . " " . $clientUser . "@" . $clientIp . " -pw " . $clientPassword . " -m " . $clientFile;
-    pclose(popen($command, "w"));
-}

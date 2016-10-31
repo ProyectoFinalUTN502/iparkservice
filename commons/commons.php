@@ -48,3 +48,12 @@ function utf8ize($d) {
     return $d;
 }
 
+function send2Server($putty, $serverUser, $serverIp, $serverPort, $serverPassword, $serverFile) {
+    $command = "start " . $putty . " " . $serverUser . "@" . $serverIp . " -P " . $serverPort . " -pw " . $serverPassword . " -m " . $serverFile;
+    pclose(popen($command, "w"));
+}
+
+function send2Client($putty, $clientUser, $clientIp, $clientPort, $clientPassword, $clientFile) {
+    $command = "start " . $putty . " " . $clientUser . "@" . $clientIp . " -P " . $clientPort . " -pw " . $clientPassword . " -m " . $clientFile;
+    pclose(popen($command, "w"));
+}
