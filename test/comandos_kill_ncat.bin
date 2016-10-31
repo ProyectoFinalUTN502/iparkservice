@@ -1,0 +1,1 @@
+kill -15 $(pgrep -f "ncat -lkvp 33332")

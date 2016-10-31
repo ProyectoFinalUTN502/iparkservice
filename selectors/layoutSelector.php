@@ -9,6 +9,21 @@
  * Observaciones    :     
  */
 
+function getSelectedPosition($id) {
+    $result = array();
+    
+    $sql = "SELECT id, xPoint, yPoint, layout_id, floor, maxRows, maxCols 
+            FROM vw_layout WHERE id = " . $id . " LIMIT 1";
+    
+    $op = executeQuery($sql);
+    
+    $row = $op->fetch_assoc();
+    if($row != NULL) {
+        $result = $row;
+    }
+    
+    return $result;
+}
 /**
  * Devuelve la primer posicion libre de un establecimiento para un determinado
  * tipo de vehiculo

@@ -1,12 +1,20 @@
 <html>
     <head>
-        <script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
         <link href="css/style.css" rel="stylesheet">
         <title>iParking</title>
     </head>
 
     <body>
         <?php
+        
+        define("STYLE_WALL", "cell wall");
+        define("STYLE_INVALID", "cell invalid");
+        define("STYLE_CELL", "cell");
+        define("STYLE_PATH", "cell path");
+        define("STYLE_START", "cell start");
+        define("STYLE_END", "cell end");
+        
         include "pathFinder/PathFinder.php";
         include "pathFinder/NodeGraph2D.php";
 
@@ -23,13 +31,13 @@
         if ($Path) {
             foreach ($Path as $Node) {
                 list($X, $Y) = $NodeGraph->Node2XY($Node);
-                $Rendered[$X][$Y] = 'cell path'; 
+                $Rendered[$X][$Y] = STYLE_PATH; 
             }
 
             list($X, $Y) = $NodeGraph->Node2XY($start);
-            $Rendered[$X][$Y] = 'cell start';
+            $Rendered[$X][$Y] = STYLE_START;
             list($X, $Y) = $NodeGraph->Node2XY($end);
-            $Rendered[$X][$Y] = 'cell end'; 
+            $Rendered[$X][$Y] = STYLE_END; 
             
             
             $Tiles = $NodeGraph->Tiles;
@@ -40,13 +48,13 @@
                     } else {
                         switch ($Value) {
                             case PATH_WALL:
-                                $Table[$Y][$X] = 'cell wall';
+                                $Table[$Y][$X] = STYLE_WALL;
                                 break;
                             case PATH_INVALID:
-                                $Table[$Y][$X] = 'cell invalid';
+                                $Table[$Y][$X] = STYLE_INVALID;
                                 break;
                             default:
-                                $Table[$Y][$X] = 'cell';
+                                $Table[$Y][$X] = STYLE_CELL;
                                 break;
                         }
                     }
@@ -55,53 +63,84 @@
         }
         ?>
         
-        <table class="table">
+        <table id="mapTable" class="table">
             <?php 
+            $xRender = 0;
             foreach ($Table as $Y => $Cols) {
                 echo "<tr class='row'>";
+                $yRender = 0;
                 foreach ($Cols as $X => $Class) {
-                    echo "<td class='" . $Class . "'></td>";
+                    $content = "";
+                    switch ($Class) {
+                        case STYLE_END:
+                            $content = "<img src='css/car.png' style='width:30px;height:30px;'/>";
+                            break;
+                        case STYLE_START:
+                            $content = "<img src='css/position_1.png' style='width:30px;height:30px;'/>";
+                            break;
+                        case STYLE_WALL :
+                            $content = "<img src='css/car.png' style='width:30px;height:30px;'/>";
+                            break;
+                        case STYLE_INVALID :
+                            break;
+                        case STYLE_CELL:
+                            break;
+                    }
+                    echo "<td id='" . $xRender.$yRender . "' align='center' class='" . $Class . "'>" . $content . "</td>";
+                    $yRender++;
                 }
                 echo "</tr>";
+                $xRender++;
             }
             ?>
         </table>
     </body>
 </html>
 <script>
+    var tidPosition;
     var tid = setInterval(controlProcess, 1000);
-    function abortTimer() { 
-      clearInterval(tid);
+    
+    var clientImage = "position_1.png";
+    var clientContent = "<img src='css/position_1.png' style='width:30px;height:30px;'/>";
+    var clientX;
+    var clientY;
+    
+    function abortTimer(timer) { 
+      clearInterval(timer);
+    }
+    
+    function positionProcess() {
+        abortTimer(tidPosition);
+        animateClientPosition();
     }
     
     function controlProcess() {
-        abortTimer();
-        checkPosition();
+        abortTimer(tid);
+        updatePosition();
     }
     
-    function checkPosition() {
-        var parametros = {
-            "id": <?php echo $idPosition; ?>, 
-            "client_id" : <?php echo $clientID; ?>
+    function updatePosition() {
+        var parametros = { 
+            "id" : <?php echo $clientID; ?> 
         };
 
         $.ajax({
             data: parametros,
-            url: "check_position.php",
-            type: 'POST',
-            success: function (response) {
+            dataType: "json",
+            url: "rtPosition.php",
+            type: "POST",
+            success: function (r) {
                 tid = setInterval(controlProcess, 1000);
-                if (response === '<?php echo RESULT_RECALCULATE; ?>') {
-                    alert("La posicion se ha ocupado: Debe recalcular");
-                    abortTimer();
-                    location.reload();
-                }
                 
-                if (response === '<?php echo RESULT_PARK; ?>') {
-                    alert("Ha llegado a su Estacionamiento");
-                    abortTimer();
+                if (r.status === "OK") {
+                    clientX = r.x;
+                    clientY = r.y;
+                    updateClientPosition(clientX, clientY);
+                    tidPosition = setInterval(positionProcess, 200);
+                    console.log("id: " + r.id + " " + "x: " + r.x + " " + "y: " + r.y);
+                } else {
+                    console.log("No se pudo leer bien la posicion");
                 }
-                
             },
             error: function (xhr, status, error) {
                 var err = eval("(" + xhr.responseText + ")");
@@ -109,6 +148,33 @@
                 tid = setInterval(controlProcess, 1000);
             }
         });
+    }
+    
+    function updateClientPosition(x,y){
+        var tid = x.toString() + "" + y.toString();
+        
+        console.log("Tid: " + tid);
+        
+        $("#mapTable td").each(function () {
+            var content = $(this).html();
+            if (content.indexOf(clientImage) >= 0) {
+                $(this).html("");
+            }
+        });
+        
+        $("#mapTable #" + tid).html(clientContent);
+    }
+    
+    function animateClientPosition() {
+        var tid = clientX.toString() + "" + clientY.toString();
+        var content = $("#mapTable #" + tid).html();
+        
+        if (content.indexOf(clientImage) >= 0) {
+            $("#mapTable #" + tid).html("");
+        } else {
+            $("#mapTable #" + tid).html(clientContent);
+        } 
+        tidPosition = setInterval(positionProcess, 200);
     }
 </script>
 

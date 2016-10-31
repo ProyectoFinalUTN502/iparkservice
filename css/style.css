@@ -9,8 +9,8 @@
     width: 100%;
     height: 100%;
     table-layout:fixed;
-    border: 3px solid gray;
-    background-color: #FFFFE0;
+    border: 3px solid black;
+    background-color: #FFFFFF;
 }
 
 .row {
@@ -19,26 +19,28 @@
 
 .cell {
     display: table-cell;
+    border: 2px solid black;
 }
 
 .cell.start {
-    background: #7db831;
-    border: 2px solid #FFFFE0;
+    background: #3498db;/*#7db831;*/
+    border: 2px solid black;/*#FFFFE0;*/
 }
-
+/*#3498db*/
 .cell.end {
-    background: #3498db;
-    border: 2px solid #FFFFE0;
+    background: #369615;
+    border: 2px solid black;/*#FFFFE0;*/
 }
 
 .cell.wall {
-    background-image: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.1) 100%), url(ocupado.png);
-    border: 2px solid #FFDB00;
+    background: #c40303;
+    /*background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.6) 100%), url(ocupado.png);*/
+    border: 2px solid black;/*#FFDB00;*/
 }
 
 .cell.invalid {
     background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url(ocupado.png);
-    border: 2px solid #FFFFE0;
+    border: 2px solid black;/*#FFFFE0;*/
 }
 
 .cell.path {

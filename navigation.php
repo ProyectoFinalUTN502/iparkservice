@@ -3,19 +3,22 @@ require_once "config/db.php";
 require_once "selectors/layoutSelector.php";
 require_once "commons/commons.php";
 
-$type           = INPUT_GET;
-$parkinglotID   = filter_input($type, "pk_id");
-$vehicleTypeID  = filter_input($type, "vt_id");
-$clientID       = filter_input($type, "cl_id");
-
-$exp = $parkinglotID == NULL || $vehicleTypeID == NULL || $clientID == NULL;
-if ($exp) {
-    echo "<h1>Ha ocurrido un error</h1>";
-    echo "<h4>La informacion proporcionada no es valida</h4>";
+$type       = INPUT_GET;
+$id         = filter_input($type, "id");
+$clientID   = filter_input($type, "cl_id");
+//$parkinglotID   = filter_input($type, "pk_id");
+//$vehicleTypeID  = filter_input($type, "vt_id");
+if ($id == NULL || $clientID == NULL) {
     exit();
 }
+//$exp = $parkinglotID == NULL || $vehicleTypeID == NULL || $clientID == NULL;
+//if ($exp) {
+//    echo "<h1>Ha ocurrido un error</h1>";
+//    echo "<h4>La informacion proporcionada no es valida</h4>";
+//    exit();
+//}
 
-$position = getPosition($parkinglotID, $vehicleTypeID);
+$position = getSelectedPosition($id);//getPosition($parkinglotID, $vehicleTypeID);
 if (!empty($position)) {
     
     // Encontro posicion, Busco la posicion de la entrada

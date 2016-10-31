@@ -8,8 +8,6 @@
  * Observaciones    :     
  */
 
-require_once '../config/db.php';
-
 function getClientByMacAddress($macAddress) {
     
     $result = "";

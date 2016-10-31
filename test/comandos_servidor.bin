@@ -1,1 +1,1 @@
-killall ncat && ./scriptServidor.sh 20:6E:9C:08:AB:4D 2 > /dev/null
+./scriptServidor.sh 34:4D:F7:11:83:7E 2

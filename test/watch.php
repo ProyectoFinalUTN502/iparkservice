@@ -1,9 +1,15 @@
 <?php
 require_once '../config/db.php';
 
+$clientID = filter_input(INPUT_GET, "id");
+if ($clientID == NULL) {
+    exit();
+}
+
 $sql = "SELECT rtp.id, rtp.xPoint, rtp.yPoint, c.name  "
      . "FROM real_time_position rtp LEFT JOIN client c ON rtp.client_id = c.id  "
-     . "ORDER BY id DESC LIMIT 1;";
+     . "WHERE client_id=" . $clientID . " ORDER BY id DESC LIMIT 1;";
+
 $op = executeQuery($sql);
 $data = $op->fetch_assoc();
 
@@ -26,8 +32,10 @@ $y = 0;
                 echo " xPoint = " . $data["xPoint"] . " | yPoint = " . $data["yPoint"] . "<hr>";
                 
                 if ($data != NULL) {
-                    $x = ceil(round($data["xPoint"], 1, PHP_ROUND_HALF_UP) / 0.5);
-                    $y = ceil(round($data["yPoint"], 1, PHP_ROUND_HALF_UP) / 0.5);
+                    // ceil(round($data["xPoint"], 1, PHP_ROUND_HALF_UP) / 0.5);
+                    $x = $data["xPoint"] / 0.5;
+                    $y = $data["yPoint"] / 0.5;
+                            
                 }
                 
                 echo " x = " . $x . " | y = " . $y . "<hr>";
@@ -35,10 +43,10 @@ $y = 0;
         </div>
         <table class="table">
             <?php 
-                for ($rows = 1; $rows <= 10; $rows ++) {
+                for ($rows = 7; $rows >= 0; $rows --) {
                     echo "<tr>";
-                    for ($cols = 8; $cols >= 1; $cols --) {
-                        $pos = ($rows . " , " . $cols);
+                    for ($cols = 0; $cols < 6; $cols ++) {
+                        $pos = ($cols . " , " . $rows);
                         
                         if ($x == $cols && $y == $rows) {
                             echo "<td style='background-color: #000000; color: #FFFFFF;' align='center'>" . $data["name"] . "</td>";
