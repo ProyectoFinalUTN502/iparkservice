@@ -111,7 +111,17 @@ $maxCols = $row["maxCols"];
             }
         ?>
         </table>
-       
+        <br>
+        <p>
+            <b>Instrucciones:</b> La siguiente pagina muestra una vista en tiempo
+            real de un mapa de un establecimiento.<br> 
+            Haga click sobre la celda que desee modificar.<br>
+            La actualizacion de la vista, debe hacerse en forma manual<br>
+            El ciclo de estados se realiza de esta forma: <br><br>
+            <b>Verde:</b> LIBRE<br>
+            <b>Rojo:</b> RESERVADO<br>
+            <b>Negro:</b> OCUPADO
+        </p>
     </body>
 </html>
 <script>

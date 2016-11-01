@@ -183,7 +183,29 @@
             var content = $(this).html();
             if (content.indexOf(clientImage) >= 0) {
                 $(this).html("");
+                
+                // Si antes era entrada, le cargo el contenido
+                if ($( this ).attr("class") === "<?php echo STYLE_START; ?>") {
+                    $(this).html("<b>ENTRADA</b>");
+                }
+                
+                // Si antes era salida, le cargo el contenido
+                if ($( this ).attr("class") === "<?php echo STYLE_EXIT; ?>") {
+                    $(this).html("<b>EXIT</b>");
+                }
+                
+                // Si antes era una posicion, le vuelvo a poner la imagen
+                if ($( this ).attr("class") === "<?php echo STYLE_WALL; ?>") {
+                    $(this).html("<img src='css/car.png' style='width:30px;height:30px;'/>");
+                }
+                
+                // Si antes era una posicion, le vuelvo a poner la imagen
+                if ($( this ).attr("class") === "<?php echo STYLE_END; ?>") {
+                    $(this).html("<img src='css/car.png' style='width:30px;height:30px;'/>");
+                }
+                
             }
+            
         });
         
         $("#mapTable #" + tid).html(clientContent);
