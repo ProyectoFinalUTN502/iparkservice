@@ -57,3 +57,25 @@ function send2Client($putty, $clientUser, $clientIp, $clientPort, $clientPasswor
     $command = "start " . $putty . " " . $clientUser . "@" . $clientIp . " -P " . $clientPort . " -pw " . $clientPassword . " -m " . $clientFile;
     pclose(popen($command, "w"));
 }
+
+function preparePosition($data) {
+    $r = round($data, 1, PHP_ROUND_HALF_UP);
+    
+    if (strpos($r, ".") == false) {
+        $r = $r . ".0";
+    }
+    
+    $n = explode(".", $r);
+    
+    $result = 0;
+    if ($n[1] < POINT_SCALE) {
+        $result = $n[0] . ".0";
+    } elseif ($n[1] == POINT_SCALE) {
+        $result = $n[0] . ("." . POINT_SCALE);
+    } elseif ($n[1] > POINT_SCALE) {
+        $t = $n[0] + 1;
+        $result = $t;
+    }
+
+    return $result;
+}

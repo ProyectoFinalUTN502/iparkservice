@@ -14,6 +14,9 @@
         define("STYLE_PATH", "cell path");
         define("STYLE_START", "cell start");
         define("STYLE_END", "cell end");
+        define("STYLE_EXIT", "cell exit");
+        define("STYLE_RIN", "cell rin");
+        define("STYLE_ROUT", "cell rout");
         
         include "pathFinder/PathFinder.php";
         include "pathFinder/NodeGraph2D.php";
@@ -36,6 +39,7 @@
 
             list($X, $Y) = $NodeGraph->Node2XY($start);
             $Rendered[$X][$Y] = STYLE_START;
+            
             list($X, $Y) = $NodeGraph->Node2XY($end);
             $Rendered[$X][$Y] = STYLE_END; 
             
@@ -52,6 +56,15 @@
                                 break;
                             case PATH_INVALID:
                                 $Table[$Y][$X] = STYLE_INVALID;
+                                break;
+                            case PATH_OUT:
+                                $Table[$Y][$X] = STYLE_EXIT;
+                                break;
+                            case PATH_RIN:
+                                $Table[$Y][$X] = STYLE_RIN;
+                                break;
+                            case PATH_ROUT:
+                                $Table[$Y][$X] = STYLE_ROUT;
                                 break;
                             default:
                                 $Table[$Y][$X] = STYLE_CELL;
@@ -82,6 +95,15 @@
                             $content = "<img src='css/car.png' style='width:30px;height:30px;'/>";
                             break;
                         case STYLE_INVALID :
+                            break;
+                        case STYLE_EXIT:
+                            $content = "<b>EXIT</b>";
+                            break;
+                        case STYLE_RIN:
+                            $content = "<b>&#62;</b>";
+                            break;
+                        case STYLE_ROUT:
+                            $content = "<b>&#60;</b>";
                             break;
                         case STYLE_CELL:
                             break;
@@ -121,7 +143,9 @@
     
     function updatePosition() {
         var parametros = { 
-            "id" : <?php echo $clientID; ?> 
+            "id"    : <?php echo $clientID; ?>,
+            "maxX"  : <?php echo $lyRows; ?>,
+            "maxY"  : <?php echo $lyCols; ?>
         };
 
         $.ajax({
@@ -166,15 +190,15 @@
     }
     
     function animateClientPosition() {
-        var tid = clientX.toString() + "" + clientY.toString();
-        var content = $("#mapTable #" + tid).html();
-        
-        if (content.indexOf(clientImage) >= 0) {
-            $("#mapTable #" + tid).html("");
-        } else {
-            $("#mapTable #" + tid).html(clientContent);
-        } 
-        tidPosition = setInterval(positionProcess, 200);
+//        var tid = clientX.toString() + "" + clientY.toString();
+//        var content = $("#mapTable #" + tid).html();
+//        
+//        if (content.indexOf(clientImage) >= 0) {
+//            $("#mapTable #" + tid).html("");
+//        } else {
+//            $("#mapTable #" + tid).html(clientContent);
+//        } 
+//        tidPosition = setInterval(positionProcess, 200);
     }
 </script>
 

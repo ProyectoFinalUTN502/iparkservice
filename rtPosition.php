@@ -11,6 +11,8 @@ require_once "config/db.php";
 
 $type   = INPUT_POST;
 $id     = filter_input($type, "id");
+$maxX   = filter_input($type, "maxX");
+$maxY   = filter_input($type, "maxY");
 
 if ($id == NULL) {
     $result = array();
@@ -38,28 +40,16 @@ if ($row == null) {
     exit();
 }
 
-/* Esto transforma:
- *
- * 1.83 => 1.8
- * 1.86 => 1.9
- * 1.89 => 1.9
- */
-$roundX = round($row["xPoint"], 1, PHP_ROUND_HALF_UP);
-$roundY = round($row["yPoint"], 1, PHP_ROUND_HALF_UP);
-/*
- * Con la fraccion redondeada a un decimal, ahora la transformo
- * en un numero entero, convirtiendo:
- * 
- * 1.9 => 2
- * 1.5 => 2
- * 1.4 => 1
- * 1.2 => 1
- * 
- * NOTA: Si se usa ceil() en lugar de round(), los valores como 1.1 van a ser
- * automaticamente redondeados hacia arriba, o hacia abajo si se usa floor()
- */
-$x = round($roundX);
-$y = round($roundY);
+$x = ($row["xPoint"] / MIN_DISTANCE);
+$y = ($row["yPoint"] / MIN_DISTANCE);
+
+// Calculo las medidas por defecto
+$x = ($x < 0) ? 0 : $x;
+$y = ($y < 0) ? 0 : $y; 
+
+// Calculo las medidas por exceso
+$x = ($x >= $maxX) ? ($x - 1) : $x;
+$y = ($y >= $maxY) ? ($y - 1) : $y; 
 
 $result             = array();
 $result["status"]   = RESULT_OK;

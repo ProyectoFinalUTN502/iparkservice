@@ -37,3 +37,10 @@ define("NOT_ACTIVE", 0);
 // PATHFINDER
 define("PATH_WALL", - 255);
 define("PATH_INVALID", - 512);
+define("PATH_OUT", -1024);
+define("PATH_RIN", -2048);
+define("PATH_ROUT", -2500);
+
+// CALCULOS DE DISTANCIA
+define("MIN_DISTANCE", 0.5);
+define("POINT_SCALE", 5);

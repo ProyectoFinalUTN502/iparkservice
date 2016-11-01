@@ -22,7 +22,7 @@ if ($id == NULL) {
     exit();
 }
 
-$sql = "DELETE FROM real_time_position WHERE client_id = " . $clientID;
+$sql = "DELETE FROM real_time_position WHERE client_id = " . $id;
 $op = executeNonQuery($sql);
 
 $result = array();

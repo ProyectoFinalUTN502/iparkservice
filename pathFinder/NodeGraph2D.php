@@ -65,7 +65,13 @@ class NodeGraph2D implements iNodeGraph {
                 continue;
             }
 
-            if ($this->Tiles[$NX][$NY] == PATH_WALL) {
+            $val = $this->Tiles[$NX][$NY];
+            $exp = $val == PATH_WALL || 
+                    $val == PATH_OUT || 
+                    $val == PATH_RIN || 
+                    $val == PATH_ROUT || 
+                    $val == PATH_INVALID;
+            if ($exp) {
                 continue;
             }
 

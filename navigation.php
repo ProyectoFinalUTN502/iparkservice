@@ -6,17 +6,10 @@ require_once "commons/commons.php";
 $type       = INPUT_GET;
 $id         = filter_input($type, "id");
 $clientID   = filter_input($type, "cl_id");
-//$parkinglotID   = filter_input($type, "pk_id");
-//$vehicleTypeID  = filter_input($type, "vt_id");
+
 if ($id == NULL || $clientID == NULL) {
     exit();
 }
-//$exp = $parkinglotID == NULL || $vehicleTypeID == NULL || $clientID == NULL;
-//if ($exp) {
-//    echo "<h1>Ha ocurrido un error</h1>";
-//    echo "<h4>La informacion proporcionada no es valida</h4>";
-//    exit();
-//}
 
 $position = getSelectedPosition($id);//getPosition($parkinglotID, $vehicleTypeID);
 if (!empty($position)) {

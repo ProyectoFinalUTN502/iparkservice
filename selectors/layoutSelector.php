@@ -139,6 +139,13 @@ function getLayouGraph($layoutID, $x, $y) {
     // Las posiciones marcadas como invalidas en el Layout
     $invalid = getInvalidPositions($layoutID);
     
+    // Las posiciones de Salida
+    $dout = getDoutPositions($layoutID);
+    
+    // Las posiciones de Rampa Entrada y Rampa de Salida
+    $rin = getRinPositions($layoutID);
+    $rout = getRoutPositions($layoutID);
+    
     foreach($avilable as $a) {
         array_push($result, $a);
     }
@@ -149,6 +156,18 @@ function getLayouGraph($layoutID, $x, $y) {
     
     foreach ($invalid as $v) {
         array_push($result, $v);
+    }
+    
+    foreach ($dout as $d){
+        array_push($result, $d);
+    }
+    
+    foreach ($rin as $r) {
+        array_push($result, $r);
+    }
+    
+    foreach ($rout as $r) {
+        array_push($result, $r);
     }
     
     return $result;
@@ -195,8 +214,10 @@ function getUnavailablePostitions($layoutID, $x, $y) {
                 layout_position 
             WHERE 
                 layout_id = " . $layoutID . " AND 
-                vehicle_type_id IS NOT NULL
-            UNION
+                vehicle_type_id IS NOT NULL";
+/*
+
+ * UNION
             SELECT 
                 xPoint,
                 yPoint
@@ -210,7 +231,9 @@ function getUnavailablePostitions($layoutID, $x, $y) {
                     dout = " . VALID_POSITION . " OR 
                     rin = " . VALID_POSITION . " OR 
                     rout = " . VALID_POSITION . "
-                )";
+                ) */
+    
+
     
 //    $sql = "SELECT 
 //                xPoint,
@@ -280,6 +303,84 @@ function getInvalidPositions($layoutID) {
             $row["yPoint"],
             $row["xPoint"],
             PATH_INVALID
+        );
+        array_push($result, $pos);
+    }
+    
+    return $result;
+}
+
+function getDoutPositions($layoutID) {
+    $result = array();
+    
+    $sql = "SELECT 
+                xPoint,
+                yPoint
+            FROM 
+                layout_position 
+            WHERE 
+                layout_id = " . $layoutID . " AND 
+                dout = " . VALID_POSITION;
+    
+    $op = executeQuery($sql);
+    
+    while (($row = $op->fetch_assoc())) {
+        $pos = array(
+            $row["yPoint"],
+            $row["xPoint"],
+            PATH_OUT
+        );
+        array_push($result, $pos);
+    }
+    
+    return $result;
+}
+
+function getRinPositions($layoutID) {
+    $result = array();
+    
+    $sql = "SELECT 
+                xPoint,
+                yPoint
+            FROM 
+                layout_position 
+            WHERE 
+                layout_id = " . $layoutID . " AND 
+                rIn = " . VALID_POSITION;
+    
+    $op = executeQuery($sql);
+    
+    while (($row = $op->fetch_assoc())) {
+        $pos = array(
+            $row["yPoint"],
+            $row["xPoint"],
+            PATH_RIN
+        );
+        array_push($result, $pos);
+    }
+    
+    return $result;
+}
+
+function getRoutPositions($layoutID) {
+    $result = array();
+    
+    $sql = "SELECT 
+                xPoint,
+                yPoint
+            FROM 
+                layout_position 
+            WHERE 
+                layout_id = " . $layoutID . " AND 
+                rOut = " . VALID_POSITION;
+    
+    $op = executeQuery($sql);
+    
+    while (($row = $op->fetch_assoc())) {
+        $pos = array(
+            $row["yPoint"],
+            $row["xPoint"],
+            PATH_ROUT
         );
         array_push($result, $pos);
     }

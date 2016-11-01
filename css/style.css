@@ -26,6 +26,23 @@
     background: #3498db;/*#7db831;*/
     border: 2px solid black;/*#FFFFE0;*/
 }
+
+.cell.exit {
+    background: #3498db;/*#7db831;*/
+    border: 2px solid black;/*#FFFFE0;*/
+}
+
+.cell.rin {
+    background: #3498db;/*#7db831;*/
+    border: 2px solid black;/*#FFFFE0;*/
+}
+
+.cell.rout {
+    background: #3498db;/*#7db831;*/
+    border: 2px solid black;/*#FFFFE0;*/
+}
+
+
 /*#3498db*/
 .cell.end {
     background: #369615;

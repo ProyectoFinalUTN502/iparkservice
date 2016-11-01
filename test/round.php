@@ -6,7 +6,17 @@
  * and open the template in the editor.
  */
 
-$original = 0.6;
+$a = 3.1;
+
+if (strpos($a, ".") == false) {
+    echo $a . ".0";
+} else {
+	echo $a;
+}
+exit();
+
+
+$original = 3.00;
 
 $fRounded = round($original, 1, PHP_ROUND_HALF_UP);
 $n = explode(".", $fRounded);
